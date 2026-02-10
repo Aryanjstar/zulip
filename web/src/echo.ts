@@ -164,7 +164,7 @@ function resend_message(
 ): void {
     message_store.update_message_content(message, message.raw_content!);
     if (show_retry_spinner($row)) {
-        // retry already in in progress
+        // retry already in progress
         return;
     }
 
