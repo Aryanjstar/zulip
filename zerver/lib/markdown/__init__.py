@@ -253,10 +253,10 @@ def get_web_link_regex() -> Pattern[str]:
     file_links = r"| (?:file://(/[^/ ]*)+/?)" if settings.ENABLE_FILE_LINKS else r""
     REGEX = rf"""
         (?P<url>             # Main group
-            # URL with explicit protocol - allow any preceding character (including multibyte)
+            # URL with explicit protocol - allow multibyte, whitespace, and safe punctuation before URL
             (?:
-                (?<![a-zA-Z0-9])                 # Don't match if preceded by ASCII alphanumeric
-                                                 # (allows multibyte, whitespace, and special chars)
+                (?<![a-zA-Z0-9=])                 # Don't match if preceded by ASCII alphanumeric or =
+                                                 # (avoids e.g. <script src=http://; allows multibyte, space, etc.)
                 https?://[\w.:@-]+?              # Protocol and domain
                 (?:
                     (?:/ {nested_paren_chunk} )      # A path, beginning with /; zero-to-6 sets of paired parens
